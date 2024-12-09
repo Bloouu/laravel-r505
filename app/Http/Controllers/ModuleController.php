@@ -14,6 +14,12 @@ class ModuleController extends Controller
         return view('modules.index', compact('modules'));
     }
 
+    public function show($id)
+    {
+        $module = Module::findOrFail($id);
+        return view('modules.show', compact('module'));
+    }
+
     // Méthode pour afficher le formulaire de création
     public function create()
     {
