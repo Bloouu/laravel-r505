@@ -19,12 +19,18 @@ class EleveController extends Controller
     // Afficher le formulaire de création d'une évaluation
     public function create()
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         return view('eleves.create');
     }
 
     // Enregistrer une nouvelle évaluation
     public function store(Request $request)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $validator = Validator::make($request->all(), [
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
@@ -44,6 +50,9 @@ class EleveController extends Controller
     // Afficher le formulaire de modification d'une évaluation
     public function edit($id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $eleve = Eleve::findOrFail($id);
         return view('eleves.edit', compact('eleve'));
     }
@@ -51,6 +60,9 @@ class EleveController extends Controller
     // Mettre à jour une évaluation
     public function update(Request $request, $id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $eleve = Eleve::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
@@ -73,6 +85,9 @@ class EleveController extends Controller
     // Supprimer une évaluation
     public function destroy($id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $eleve = Eleve::findOrFail($id);
         $eleve->delete();
 
@@ -81,6 +96,9 @@ class EleveController extends Controller
 
     public function showNotes($id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $notes = EvaluationEleve::with('eleve')
             ->where('eleve_id', $id)
             ->get();

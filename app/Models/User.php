@@ -51,5 +51,8 @@ class User extends Authenticatable
         return $this->role === 'prof';
     }
 
-    public is
+    public function isEleve()
+    {
+        return $this->role === 'eleve';
+    }
 }

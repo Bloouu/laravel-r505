@@ -18,21 +18,6 @@
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-blue-500 text-white py-4 shadow-md">
-                    <div class="container mx-auto flex justify-between items-center">
-                        <h1 class="text-xl font-bold"><a href="{{ url('/') }}">Mon Application</a></h1>
-                        <nav class="space-x-4">
-                            <a href="{{ route('eleves.index') }}" class="hover:underline">Élèves</a>
-                            <a href="{{ route('evaluations.index') }}" class="hover:underline">Évaluations</a>
-                            <a href="{{ route('modules.index') }}" class="hover:underline">Modules</a>
-                            <a href="{{ route('evaluations_eleves.index') }}" class="hover:underline">Évaluations Élèves</a>
-                        </nav>
-                    </div>
-                </header>
-            @endisset
-
             <!-- Page Content -->
             <div class="container">
                 @yield('content')

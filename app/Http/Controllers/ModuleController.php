@@ -23,12 +23,18 @@ class ModuleController extends Controller
     // Méthode pour afficher le formulaire de création
     public function create()
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         return view('modules.create'); // Affiche la vue create.blade.php
     }
 
     // Méthode pour enregistrer un nouveau module
     public function store(Request $request)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $validatedData = $request->validate([
             'code' => 'required|string|max:255|unique:modules',
             'nom' => 'required|string|max:255',
@@ -42,6 +48,9 @@ class ModuleController extends Controller
     // Méthode pour afficher le formulaire de modification
     public function edit($id)
     {        
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $module = Module::findOrFail($id);
         return view('modules.edit', compact('module'));
     }
@@ -49,6 +58,9 @@ class ModuleController extends Controller
     // Méthode pour mettre à jour un module existant
     public function update(Request $request, $id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $validatedData = $request->validate([
             'code' => 'required|string|max:255|unique:modules,code,' . $id,
             'nom' => 'required|string|max:255',
@@ -63,6 +75,9 @@ class ModuleController extends Controller
     // Méthode pour supprimer un module
     public function destroy($id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
         $module = Module::findOrFail($id);
         $module->delete();
 

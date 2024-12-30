@@ -13,9 +13,11 @@
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
-        @inertiaHead
+        <!-- @inertiaHead -->
     </head>
     <body class="font-sans antialiased">
-        @inertia
+        @include('layouts.navigation')
+
+        @yield('content')
     </body>
 </html>

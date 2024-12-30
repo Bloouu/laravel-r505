@@ -28,6 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/login', function() {
+    return view('auth.login');
+})->withoutMiddleware('auth')->name('login');
+
 Route::resource('modules', ModuleController::class);
 
 Route::resource('eleves', EleveController::class);

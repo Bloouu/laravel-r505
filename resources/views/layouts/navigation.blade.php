@@ -7,5 +7,16 @@
             <a href="{{ route('modules.index') }}" class="hover:underline">Modules</a>
             <a href="{{ route('evaluations_eleves.index') }}" class="hover:underline">Évaluations Élèves</a>
         </nav>
+        <div>
+            @guest
+                <a href="{{ route('login') }}" class="hover:underline">Se connecter</a>
+            @else
+                <span>{{ Auth::user()->name }} ({{ Auth::user()->role }})</span>
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="hover:underline text-red-500">Déconnexion</button>
+                </form>
+            @endguest
+        </div>
     </div>
 </header>
