@@ -6,6 +6,8 @@ use App\Models\EvaluationEleve;
 use App\Models\Eleve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\NoteAjoutNotif;
+use Illuminate\Support\Facades\Mail;
 
 class EvaluationEleveController extends Controller
 {
@@ -49,7 +51,17 @@ class EvaluationEleveController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        EvaluationEleve::create($request->all());
+        $note = EvaluationEleve::create($request->all());
+
+        $noteDetails = [
+            'nom' => $note->eleve->nom . ' ' . $note->eleve->prenom,
+            'note' => $note->note,
+            'evaluation' => $note->evaluation->titre,
+            'date' => $note->created_at->format('d/m/Y'),
+        ];
+
+        Mail::to($note->eleve->email)->send(new NoteAjoutNotif($noteDetails));
+
         return redirect()->route('evaluations_eleves.index')->with('success', 'Évaluation d\'éleve ajoutée avec succès.');
     }
 
