@@ -8,23 +8,31 @@ use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
 {
-    // Afficher la liste des évaluations
+    
     public function index()
     {
-        $evaluations = Evaluation::with('module')->get(); // Récupérer toutes les évaluations avec leurs modules associés
+        $evaluations = Evaluation::with('module')->get();
         return view('evaluations.index', compact('evaluations'));
     }
 
-    // Afficher le formulaire de création d'une évaluation
+    
     public function create()
     {
-        $modules = Module::all(); // Récupérer tous les modules pour afficher dans le formulaire
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
+
+        $modules = Module::all(); 
         return view('evaluations.create', compact('modules'));
     }
 
-    // Enregistrer une nouvelle évaluation
+    
     public function store(Request $request)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
+
         $validatedData = $request->validate([
             'titre' => 'required|string|max:255',
             'date' => 'required|date',
@@ -37,18 +45,25 @@ class EvaluationController extends Controller
         return redirect()->route('evaluations.index')->with('success', 'Évaluation ajoutée avec succès.');
     }
 
-    // Afficher le formulaire de modification d'une évaluation
+    
     public function edit($id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
 
         $evaluation = Evaluation::findOrFail($id);
-        $modules = Module::all(); // Récupérer les modules pour les afficher dans le formulaire de modification
+        $modules = Module::all();
         return view('evaluations.edit', compact('evaluation', 'modules'));
     }
 
-    // Mettre à jour une évaluation
+    
     public function update(Request $request, $id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
+
         $validatedData = $request->validate([
             'titre' => 'required|string|max:255',
             'date' => 'required|date',
@@ -62,9 +77,13 @@ class EvaluationController extends Controller
         return redirect()->route('evaluations.index')->with('success', 'Évaluation mise à jour avec succès.');
     }
 
-    // Supprimer une évaluation
+    
     public function destroy($id)
     {
+        if (auth()->user()->isEleve()) {
+            return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
+        }
+
         $evaluation = Evaluation::findOrFail($id);
         $evaluation->delete();
 

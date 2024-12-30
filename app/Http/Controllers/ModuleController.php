@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
-    // Méthode pour afficher la liste des modules
     public function index()
     {
         $modules = Module::all();
@@ -19,17 +18,15 @@ class ModuleController extends Controller
         $module = Module::findOrFail($id);
         return view('modules.show', compact('module'));
     }
-
-    // Méthode pour afficher le formulaire de création
+    
     public function create()
     {
         if (auth()->user()->isEleve()) {
             return redirect()->route('dashboard')->with('error', 'Cette fonctionnalité est réservée aux professeurs');
         }
-        return view('modules.create'); // Affiche la vue create.blade.php
+        return view('modules.create'); 
     }
-
-    // Méthode pour enregistrer un nouveau module
+    
     public function store(Request $request)
     {
         if (auth()->user()->isEleve()) {
@@ -44,8 +41,7 @@ class ModuleController extends Controller
 
         return redirect()->route('modules.index')->with('success', 'Module ajouté avec succès.');
     }
-
-    // Méthode pour afficher le formulaire de modification
+    
     public function edit($id)
     {        
         if (auth()->user()->isEleve()) {
@@ -55,7 +51,7 @@ class ModuleController extends Controller
         return view('modules.edit', compact('module'));
     }
 
-    // Méthode pour mettre à jour un module existant
+    
     public function update(Request $request, $id)
     {
         if (auth()->user()->isEleve()) {
@@ -72,7 +68,7 @@ class ModuleController extends Controller
         return redirect()->route('modules.index')->with('success', 'Module mis à jour avec succès.');
     }
 
-    // Méthode pour supprimer un module
+    
     public function destroy($id)
     {
         if (auth()->user()->isEleve()) {

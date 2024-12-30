@@ -9,14 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 class EleveController extends Controller
 {
-    // Afficher la liste des évaluations
     public function index()
     {
         $eleves = Eleve::all();
         return view('eleves.index', compact('eleves'));
     }
 
-    // Afficher le formulaire de création d'une évaluation
     public function create()
     {
         if (auth()->user()->isEleve()) {
@@ -25,7 +23,6 @@ class EleveController extends Controller
         return view('eleves.create');
     }
 
-    // Enregistrer une nouvelle évaluation
     public function store(Request $request)
     {
         if (auth()->user()->isEleve()) {
@@ -47,7 +44,6 @@ class EleveController extends Controller
         return redirect()->route('eleves.index')->with('success', 'Éleve ajouté avec succès.');
     }
 
-    // Afficher le formulaire de modification d'une évaluation
     public function edit($id)
     {
         if (auth()->user()->isEleve()) {
@@ -57,7 +53,6 @@ class EleveController extends Controller
         return view('eleves.edit', compact('eleve'));
     }
 
-    // Mettre à jour une évaluation
     public function update(Request $request, $id)
     {
         if (auth()->user()->isEleve()) {
@@ -82,7 +77,6 @@ class EleveController extends Controller
         return redirect()->route('eleves.index')->with('success', 'Éleve mis à jour avec succès.');
     }
 
-    // Supprimer une évaluation
     public function destroy($id)
     {
         if (auth()->user()->isEleve()) {
